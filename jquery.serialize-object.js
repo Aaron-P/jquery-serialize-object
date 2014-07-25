@@ -110,13 +110,17 @@
                         data === "null" ? null :
                         // Only convert to a number if it doesn't change the string
                         +data + "" === data ? +data :
-                        rbrace.test(data) ? jQuery.parseJSON(data) :
+                        rbrace.test(data) ? parseJSON(data) :
                         data;
                 } catch (e) { }
             }/* else {
                 data = undefined;
             }*/
             return data;
+        }
+
+        function parseJSON(data) {
+            return JSON.parse(data + "");
         }
 
         // public API
