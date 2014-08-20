@@ -25,11 +25,11 @@
     }
 }(this, function (root, exports, $) {
     var patterns = {
-        validate: /^[a-z][a-z0-9_]*(?:\[(?:\d*|[a-z0-9_]+)\]|\.[a-z0-9_]+)*$/i,
-        key: /[a-z0-9_]+|(?=\[\])/gi,
+        validate: /^[a-z][a-z0-9_]*(?:\[(?:\d*|['"][a-z0-9_]+['"]|[a-z0-9_]+)\]|\.[a-z0-9_]+)*$/i,
+        key: /['"][a-z0-9_]+['"]|[a-z0-9_]+|(?=\[\])/gi,
         push: /^$/,
         fixed: /^\d+$/,
-        named: /^[a-z0-9_]+$/i
+        named: /^['"][a-z0-9_]+['"]|[a-z0-9_]+?$/i
     };
 
     function FormSerializer(helper) {
@@ -60,9 +60,10 @@
                     value = build([], k, value);
                 }
 
-                    // foo; foo[bar]
+                    // foo; foo[bar]; foo['bar']
                 else if (patterns.named.test(k)) {
-                    value = build({}, k, value);
+                    var idx = k.replace(/^['"]|['"]$/g, '');
+                    value = build({}, idx, value);
                 }
             }
 
